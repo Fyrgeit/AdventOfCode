@@ -1,6 +1,3 @@
-Bun
-    .file("input.txt")
-    .text()
-    .then(text => console.log(
-        text
-    ));
+console.log((await Bun.file("../00/input.txt").text())
+    
+);

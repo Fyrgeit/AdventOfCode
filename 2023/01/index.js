@@ -1,7 +1,4 @@
 const nums = {
-    "zeroneight": "018",
-    "twoneight": "218",
-    "sevenineight": "798",
     "eightwo": "82",
     "eighthree": "83",
     "zerone": "01",
@@ -28,7 +25,6 @@ console.log((await Bun.file("input.txt").text())
     .map(x => {
         let out = x;
 
-        
         for (let key in nums) {
             out = out.split(key).join(nums[key]);
         }
@@ -45,7 +41,6 @@ console.log((await Bun.file("input.txt").text())
         }
 
         return Number(out[0] + out[out.length - 1]);
-        return out;
     })
     .reduce((sum, val) => sum + val, 0)
 );

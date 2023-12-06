@@ -6,21 +6,15 @@ let formated = {
 };
 
 formated.seeds = formated.seeds.map((seed, index) => {
-    console.log(index + ": " + seed)
-
     if (index % 2 == 0) {
-        let out = [seed];
-
-        for (let i = 1; i < formated.seeds[index + 1]; i++) {
-            out.push(seed + i)
-        }
-
-        return out;
+        return {
+            inclusiveMin: seed,
+            exclusiveMax: seed + formated.seeds[index + 1] - 1,
+        };
     }
 
     return 0;
 })
-.flat(Infinity)
 .filter(s => s != 0);
 
 console.log(formated.seeds);
@@ -41,19 +35,35 @@ parts.forEach((part, index) => {
     });
 });
 
-let transformed = [];
+let cont = true;
 
-formated.seeds.forEach(seed => {
-    let out = seed;
+for (let i = 0; cont; i++) {
+    let out = i;
 
-    formated.maps.forEach(level => {
-        out = mapsie(out, level.maps);
+    for (let n = formated.maps.length - 1; n >= 0; n--) {
+        out = reverse_mapsie(out, formated.maps[n].maps);
+    }
+
+    formated.seeds.forEach(seed => {
+        if (out >= seed.inclusiveMin && out < seed.exclusiveMax) {
+            console.log(i);
+            cont = false;
+        }
+    })
+}
+
+
+function reverse_mapsie(number, maps) {
+    let out = number;
+    
+    maps.forEach(map => {
+        if (number >= map.destination && number < map.destination + map.range) {
+            out = number - (map.destination - map.source);
+        }
     });
-
-    transformed.push(out);
-});
-
-console.log(Math.min(...transformed));
+    
+    return out;
+}
 
 function mapsie(number, maps) {
     let out = number;
